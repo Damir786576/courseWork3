@@ -1,0 +1,34 @@
+{% extends 'client/base.html' %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+            <div class="row text-center mb-4">
+                <a class="btn btn-primary btn-md" href="{% url 'clients:clients_create' %}" role="button">Создать</a>
+            </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for client in object_list %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title"> {{ client.full_name }} </h4>
+                        <p class="card-text"> {{ client.comment|slice:":255" }}{% if client.comment|length > 255 %}...{% endif %} </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                {% if user.is_superuser %}
+                                <a class="btn btn-secondary" href="{% url 'clients:clients_update' clients.pk %}"
+                                   role="button">Изменить</a>
+                                <a class="btn btn-secondary" href="{% url 'clients:clients_delete' clients.pk %}"
+                                   role="button">Удалить</a>
+                                {% endif %}
+                                <a class="btn btn-primary" href="{% url 'clients:clients_detail' clients.pk %}"
+                                   role="button">Посмотреть</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

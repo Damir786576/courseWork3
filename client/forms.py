@@ -1,8 +1,8 @@
 from django import forms
-from .models import Mail
+from .models import Client
 
 
 class MailForm(forms.ModelForm):
     class Meta:
-        model = Mail
+        model = Client
         fields = ['email', 'full_name', 'comment']
