@@ -1,0 +1,19 @@
+{% extends "clients/base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+        <h1 class="mt-4">Добро пожаловать в сервис рассылки!</h1>
+        <p class="lead">Здесь вы можете управлять клиентами и следить за статусом рассылок.</p>
+
+        <div class="stats mt-4">
+            <h3>Статистика рассылок:</h3>
+            <p><strong>Общее количество рассылок:</strong> {{ total_mailings }}</p>
+            <p><strong>Активных рассылок (статус "Запущена"):</strong> {{ active_mailings }}</p>
+            <p><strong>Уникальных получателей:</strong> {{ unique_recipients }}</p>
+        </div>
+
+        <a href="{% url 'clients_list' %}" class="btn btn-primary mt-3">Перейти к клиентам</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "clients/base.html" %}
+
+{% block title %}Детали рассылки{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Детали рассылки</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Тема рассылки:</strong> {{ mailing.subject }}</li>
+            <li class="list-group-item"><strong>Сообщение:</strong> {{ mailing.message.subject }}</li>
+            <li class="list-group-item"><strong>Статус:</strong> {{ mailing.get_status_display }}</li>
+            <li class="list-group-item"><strong>Дата начала:</strong> {{ mailing.first_sent_at }}</li>
+            <li class="list-group-item"><strong>Дата окончания:</strong> {{ mailing.end_at }}</li>
+            <li class="list-group-item"><strong>Получатели:</strong>
+                <ul>
+                    {% for client in mailing.clients.all %}
+                        <li>{{ client.full_name }} ({{ client.email }})</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+        <div class="mt-3">
+            <a href="{% url 'mailing_list' %}" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
+{% endblock %}
+

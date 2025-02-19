@@ -1,0 +1,32 @@
+{% extends 'clients/base.html' %}
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            {% for users in object_list %}
+
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title"> {{ users.username }} </h4>
+                        <p class="card-text"> {{ users.email }} </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if perms.users.can_block_user %}
+                            <form action="{% url 'users:block_user' users.pk %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">
+                                    {% if user.is_active %}Блокировать{% else %}Разблокировать{% endif %}
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
