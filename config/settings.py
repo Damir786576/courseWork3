@@ -1,5 +1,9 @@
 import os
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -117,3 +121,7 @@ if CACHE_ENABLED:
 
 LOGIN_REDIRECT_URL = "clients:home"
 LOGIN_URL = "users:login"
+
+print(os.getenv('NAME'))
+print(os.getenv('USER'))
+print(os.getenv('PASSWORD'))
