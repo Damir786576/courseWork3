@@ -4,8 +4,13 @@
 
 {% block content %}
     <div class="text-center">
-        <h1 class="mt-4">Добро пожаловать в сервис рассылки!</h1>
-        <p class="lead">Здесь вы можете управлять клиентами и следить за статусом рассылок.</p>
+        {% if user.is_authenticated %}
+            <h1 class="mt-4">Добро пожаловать, {{ user.username }}!</h1>
+            <p class="lead">Здесь вы можете управлять клиентами и следить за статусом рассылок.</p>
+        {% else %}
+            <h1 class="mt-4">Добро пожаловать в сервис рассылки!</h1>
+            <p class="lead">Зарегистрируйтесь или войдите в систему, чтобы начать использовать сервис.</p>
+        {% endif %}
 
         <div class="stats mt-4">
             <h3>Статистика рассылок:</h3>
@@ -13,7 +18,5 @@
             <p><strong>Активных рассылок (статус "Запущена"):</strong> {{ active_mailings }}</p>
             <p><strong>Уникальных получателей:</strong> {{ unique_recipients }}</p>
         </div>
-
-        <a href="{% url 'clients_list' %}" class="btn btn-primary mt-3">Перейти к клиентам</a>
     </div>
 {% endblock %}

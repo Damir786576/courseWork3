@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
@@ -27,7 +28,7 @@ class ClientsListView(ListView):
 class ClientsDetailView(DetailView):
     model = Clients
     template_name = "clients/clients_detail.html"
-    context_object_name = "client"
+    context_object_name = "clients"
 
 
 class ClientsCreateView(CreateView):
@@ -48,3 +49,11 @@ class ClientsDeleteView(DeleteView):
     model = Clients
     template_name = 'clients/clients_confirm_delete.html'
     success_url = reverse_lazy('clients_list')
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return redirect("users:login")
