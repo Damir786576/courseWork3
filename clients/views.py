@@ -12,10 +12,17 @@ def home(request):
     active_mailings = Mailing.objects.filter(status='started').count()
     unique_recipients = Clients.objects.count()
 
+    total_successful_attempts = Mailing.objects.filter(status="success").count()
+    total_unsuccessful_attempts = Mailing.objects.filter(status="failed").count()
+    total_sent_messages = Mailing.objects.count()
+
     return render(request, 'clients/home.html', {
         'total_mailings': total_mailings,
         'active_mailings': active_mailings,
-        'unique_recipients': unique_recipients
+        'unique_recipients': unique_recipients,
+        'total_successful_attempts': total_successful_attempts,
+        'total_unsuccessful_attempts': total_unsuccessful_attempts,
+        'total_sent_messages': total_sent_messages,
     })
 
 

@@ -12,11 +12,15 @@
             <p class="lead">Зарегистрируйтесь или войдите в систему, чтобы начать использовать сервис.</p>
         {% endif %}
 
+        {% if user.is_superuser or user.is_staff %}
         <div class="stats mt-4">
             <h3>Статистика рассылок:</h3>
             <p><strong>Общее количество рассылок:</strong> {{ total_mailings }}</p>
             <p><strong>Активных рассылок (статус "Запущена"):</strong> {{ active_mailings }}</p>
             <p><strong>Уникальных получателей:</strong> {{ unique_recipients }}</p>
+            <p><strong>Количество успешных попыток рассылки:</strong> {{ total_successful_attempts }}</p>
+            <p><strong>Количество неуспешных попыток рассылки:</strong> {{ total_unsuccessful_attempts }}</p>
+            <p><strong>Общее количество отправленных сообщений:</strong> {{ total_sent_messages }}</p>
         </div>
     </div>
 {% endblock %}

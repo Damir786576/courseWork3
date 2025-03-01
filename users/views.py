@@ -35,7 +35,7 @@ def confirm_email(request, token):
     user.is_active = True
     user.token = None
     user.save()
-    return HttpResponse("Email подтвержден! Теперь вы можете войти.")
+    return redirect("home")
 
 
 class PasswordRecoveryView(FormView):
