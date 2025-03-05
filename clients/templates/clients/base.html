@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Сервис рассылки{% endblock %}</title>
-
-    <!-- Подключаем Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -30,9 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'mailing_list' %}">Рассылки</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'campaign_attempts' %}">Попытки рассылок</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:profile' %}">Профиль</a>
+                        </li>
                     {% endif %}
                 </ul>
-
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
@@ -56,11 +59,9 @@
             </div>
         </div>
     </nav>
-
     <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

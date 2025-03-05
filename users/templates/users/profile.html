@@ -1,0 +1,18 @@
+{% extends "clients/base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Профиль пользователя</h2>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><strong>Имя пользователя:</strong> {{ user.username }}</li>
+            <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+            <li class="list-group-item"><strong>Статус:</strong> {% if user.is_active %}Активен{% else %}Не подтверждён{% endif %}</li>
+        </ul>
+        <div>
+            <a href="{% url 'users:profile_edit' %}" class="btn btn-warning">Редактировать</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Назад</a>
+        </div>
+    </div>
+{% endblock %}

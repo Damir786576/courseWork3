@@ -1,0 +1,17 @@
+{% extends "clients/base.html" %}
+
+{% block title %}Редактировать профиль{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Редактировать профиль</h2>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <a href="{% url 'users:profile' %}" class="btn btn-secondary">Назад</a>
+        </form>
+    </div>
+{% endblock %}

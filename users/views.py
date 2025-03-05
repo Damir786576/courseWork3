@@ -2,9 +2,10 @@ import secrets
 from django.contrib.auth.views import LoginView, LogoutView
 from django.core.mail import send_mail
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, DetailView, UpdateView
 from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import CustomUserCreationForm, PasswordRecoveryForm
 from .models import User
 from config.settings import EMAIL_HOST_USER
@@ -17,7 +18,7 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         user = form.save(commit=False)
-        user.is_active = False  # Не активируем, пока не подтвердит email
+        user.is_active = False
         user.token = secrets.token_hex(16)
         user.save()
         confirmation_link = f"http://127.0.0.1:8000/users/confirm/{user.token}/"
@@ -56,3 +57,22 @@ class PasswordRecoveryView(FormView):
             [email],
         )
         return HttpResponse("Новый пароль отправлен на ваш email.")
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "users/profile.html"
+    context_object_name = "user"
+
+    def get_object(self, **kwargs):
+        return self.request.user
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ["username", "email"]
+    template_name = "users/profile_update.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_object(self, **kwargs):
+        return self.request.user

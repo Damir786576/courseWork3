@@ -1,20 +1,19 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views.decorators.cache import cache_page
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-
-from mailings.models import Mailing
+from mailings.models import Mailing, CampaignAttempt
 from .models import Clients
 
 
 def home(request):
     total_mailings = Mailing.objects.count()
     active_mailings = Mailing.objects.filter(status='started').count()
-    unique_recipients = Clients.objects.count()
-
-    total_successful_attempts = Mailing.objects.filter(status="success").count()
-    total_unsuccessful_attempts = Mailing.objects.filter(status="failed").count()
-    total_sent_messages = Mailing.objects.count()
+    unique_recipients = Clients.objects.filter(id__in=Mailing.objects.values('clients')).distinct().count()
+    total_successful_attempts = CampaignAttempt.objects.filter(status='status_ok').count()
+    total_unsuccessful_attempts = CampaignAttempt.objects.filter(status='status_nok').count()
+    total_sent_messages = total_successful_attempts
 
     return render(request, 'clients/home.html', {
         'total_mailings': total_mailings,
@@ -24,6 +23,11 @@ def home(request):
         'total_unsuccessful_attempts': total_unsuccessful_attempts,
         'total_sent_messages': total_sent_messages,
     })
+
+
+def campaign_attempts(request):
+    attempts = CampaignAttempt.objects.all()
+    return render(request, 'clients/campaign_attempts.html', {'attempts': attempts})
 
 
 class ClientsListView(ListView):
