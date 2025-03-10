@@ -1,0 +1,14 @@
+[
+    {
+        "model": "auth.group",
+        "pk": 1,
+        "fields": {
+            "name": "Менеджеры",
+            "permissions": [
+                ["view_all_messages", "mailings", "message"],
+                ["change_all_messages", "mailings", "message"],
+                ["change_all_mailings", "mailings", "mailing"]
+            ]
+        }
+    }
+]
