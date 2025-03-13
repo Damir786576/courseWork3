@@ -44,7 +44,8 @@ class MessageUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_staff or obj.owner == self.request.user
+        return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.groups.filter(
+            name='Менеджеры').exists()
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -59,7 +60,8 @@ class MessageDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_staff or obj.owner == self.request.user
+        return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.groups.filter(
+            name='Менеджеры').exists()
 
 
 class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -69,7 +71,8 @@ class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_staff or obj.owner == self.request.user
+        return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.groups.filter(
+            name='Менеджеры').exists()
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)
@@ -86,7 +89,7 @@ class MailingListView(LoginRequiredMixin, ListView):
         cache_key = f'mailing_list_{self.request.user.id}'
         mailings = cache.get(cache_key)
         if not mailings:
-            if self.request.user.is_staff:
+            if self.request.user.is_staff or self.request.user.groups.filter(name='Менеджеры').exists():
                 mailings = Mailing.objects.all()
             else:
                 mailings = Mailing.objects.filter(owner=self.request.user)
@@ -116,7 +119,7 @@ class MailingUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         obj = self.get_object()
         return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.has_perm(
-            'mailings.change_all_mailings')
+            'mailings.change_all_mailings') or self.request.user.groups.filter(name='Менеджеры').exists()
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -131,7 +134,8 @@ class MailingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_staff or obj.owner == self.request.user
+        return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.groups.filter(
+            name='Менеджеры').exists()
 
 
 class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -141,7 +145,8 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         obj = self.get_object()
-        return self.request.user.is_staff or obj.owner == self.request.user
+        return self.request.user.is_staff or obj.owner == self.request.user or self.request.user.groups.filter(
+            name='Менеджеры').exists()
 
     def delete(self, request, *args, **kwargs):
         response = super().delete(request, *args, **kwargs)

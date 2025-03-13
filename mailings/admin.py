@@ -13,7 +13,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subject', 'first_sent_at', 'end_at', 'status')
+    list_display = ('id', 'subject', 'first_sent_at', 'end_at', 'status', 'owner')
     list_filter = ('status', 'first_sent_at')
     search_fields = ('subject', 'message')
     ordering = ('-first_sent_at',)
